@@ -43,7 +43,6 @@ public:
 		Vector2 uv = Vector2{};
 		Color color = ColorFromNormalized({ 0.0f, 1.0f, 0.5f, 1.0f });
 
-		float aspectRation = renderer->width / renderer->height;
 		float dCircle = 0.0f;
 
 		//SDCircle
