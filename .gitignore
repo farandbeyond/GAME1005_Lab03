@@ -1,0 +1,15 @@
+# Build results
+/bin
+/obj
+
+# Visual Studio files (modify build/premake5.lua instead of changing VS project directly)!
+/*.vs
+/*.sln
+/*.slnx
+/*.vcxproj
+/*.vcxproj.filters
+/*.vcxproj.user
+
+#Syntax guide:
+#/*.sln ignores all solutions in current folder
+# *.sln ignores all solutions in current folder + all sub-folders
