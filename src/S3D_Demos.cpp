@@ -105,26 +105,38 @@ public:
 		S3D_DrawRectangleLines(renderer, middleRect, WHITE);
 
 		//a circle at your mousecursor, using drawcircle, and an outline
-		Vector2 mousePosition = GetMousePosition();
+		Vector2i mousePosition = S3D_GetMousePosition(renderer);
 		//y is inverted from how I first expected; this was explained to me
-		mousePosition.y = renderer->height - mousePosition.y;
-		if (S3D_CheckScreenContainsCircle(renderer, mousePosition.x, mousePosition.y, mouseCircleRadius)) {
-			S3D_DrawCircle(renderer, mousePosition.x, mousePosition.y, mouseCircleRadius, PURPLE);
-			S3D_DrawCircleLines(renderer, mousePosition.x, mousePosition.y, mouseCircleRadius, LIGHTGRAY);
-		}
+		//mousePosition.y = renderer->height - mousePosition.y;
+		//S3D_ClampToScreen(renderer, mousePosition);
+
+		//clamp mousePosition into the screen based on Radius
+		Vector2i clampedMousePosition = mousePosition;
+		Vector2i min = { mouseCircleRadius, mouseCircleRadius };
+		Vector2i max = { renderer->width - 1 - mouseCircleRadius, renderer->height - 1 - mouseCircleRadius };
+		clampedMousePosition.x = clampedMousePosition.x < min.x ? min.x : clampedMousePosition.x;
+		clampedMousePosition.x = clampedMousePosition.x > max.x ? max.x : clampedMousePosition.x;
+		clampedMousePosition.y = clampedMousePosition.y < min.y ? min.y : clampedMousePosition.y;
+		clampedMousePosition.y = clampedMousePosition.y > max.y ? max.y : clampedMousePosition.y;
+
+
+		//if (S3D_CheckScreenContainsCircle(renderer, mousePosition.x, mousePosition.y, mouseCircleRadius)) {
+		S3D_DrawCircle(renderer, clampedMousePosition.x, clampedMousePosition.y, mouseCircleRadius, PURPLE);
+		S3D_DrawCircleLines(renderer, clampedMousePosition.x, clampedMousePosition.y, mouseCircleRadius, LIGHTGRAY);
+		//}
 
 		//a line, connecting the circle and the rectangle
-		S3D_Rectangle lineCheckRect;// = { Vector2i(middleRectCenter.x, middleRectCenter.y), Vector2i(mousePosition.x, mousePosition.y) };
-		lineCheckRect.min.x = (middleRectCenter.x < mousePosition.x) ? middleRectCenter.x : mousePosition.x;
-		lineCheckRect.min.y = (middleRectCenter.y < mousePosition.y) ? middleRectCenter.y : mousePosition.y;
+		//S3D_Rectangle lineCheckRect;// = { Vector2i(middleRectCenter.x, middleRectCenter.y), Vector2i(mousePosition.x, mousePosition.y) };
+		//lineCheckRect.min.x = (middleRectCenter.x < mousePosition.x) ? middleRectCenter.x : mousePosition.x;
+		//lineCheckRect.min.y = (middleRectCenter.y < mousePosition.y) ? middleRectCenter.y : mousePosition.y;
 
-		lineCheckRect.max.x = (middleRectCenter.x > mousePosition.x) ? middleRectCenter.x : mousePosition.x;
-		lineCheckRect.max.y = (middleRectCenter.y > mousePosition.y) ? middleRectCenter.y : mousePosition.y;
+		//lineCheckRect.max.x = (middleRectCenter.x > mousePosition.x) ? middleRectCenter.x : mousePosition.x;
+		//lineCheckRect.max.y = (middleRectCenter.y > mousePosition.y) ? middleRectCenter.y : mousePosition.y;
 		
-		if (S3D_CheckScreenContainsRec(renderer, lineCheckRect)) {
+		//if (S3D_CheckScreenContainsRec(renderer, lineCheckRect)) {
 			//uncomment this line for some fun line dancing, courtesy of tan(theta)
-			//S3D_DrawLine(renderer, lineCheckRect.min.x, lineCheckRect.min.y, lineCheckRect.max.x, lineCheckRect.max.y, BROWN);
-			S3D_DrawLine(renderer, middleRectCenter.x, middleRectCenter.y, mousePosition.x, mousePosition.y, BROWN);
-		}
+		//S3D_DrawLine(renderer, lineCheckRect.min.x, lineCheckRect.min.y, lineCheckRect.max.x, lineCheckRect.max.y, BROWN);
+		S3D_DrawLine(renderer, middleRectCenter.x, middleRectCenter.y, mousePosition.x, mousePosition.y, BROWN);
+		//}
 	}
 };
